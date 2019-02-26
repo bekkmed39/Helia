@@ -39,3 +39,5 @@
   * sh configure ( or sh configure --prefix=PREFIX  )
   * make
   * make install ( or sudo make install )
+
+#### [Preview](https://www.opendesktop.org/p/1267820/)
