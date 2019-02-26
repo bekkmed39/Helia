@@ -1,0 +1,113 @@
+# Czech translations for helia package.
+# Copyright (C) 2018 THE helia'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the helia package.
+#
+# Pavel Fric <pavelfric@seznam.cz>, 2018.
+msgid ""
+msgstr ""
+"Project-Id-Version: helia 5.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-25 23:29+0200\n"
+"PO-Revision-Date: 2018-10-13 08:01+0100\n"
+"Last-Translator: Pavel Fric <pavelfric@seznam.cz>\n"
+"Language-Team: Czech <kde-i18n-doc@kde.org>\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 2.0\n"
+
+#: ../src/helia-eqa.c:101
+msgid "Audio equalizer"
+msgstr "Audioekvalizér"
+
+#: ../src/helia-eqa.c:21
+msgid "Bandwidth  Hz"
+msgstr "Šířka pásma  Hz"
+
+#: ../src/helia-eqv.c:16
+msgid "Brightness"
+msgstr "Jas"
+
+#: ../src/base.c:212 ../src/scan.c:58 ../src/scan.c:927
+msgid "Channels"
+msgstr "Kanály"
+
+#: ../src/helia-eqv.c:17
+msgid "Contrast"
+msgstr "Kontrast"
+
+#: ../src/base.c:181
+msgid "Files"
+msgstr "Soubory"
+
+#: ../src/helia-eqa.c:20
+msgid "Frequency  Hz"
+msgstr "Kmitočet  Hz"
+
+#: ../src/helia-eqv.c:19
+msgid "Hue"
+msgstr "Odstín"
+
+#: ../src/helia-eqa.c:19
+msgid "Level  dB"
+msgstr "Úroveň  dB"
+
+#: ../src/helia-eqv.c:18
+msgid "Saturation"
+msgstr "Sytost"
+
+#: ../src/scan.c:50
+msgid "Scanner"
+msgstr "Skener"
+
+#: ../src/scan.c:1551 ../src/scan.c:1564
+msgid "Undefined"
+msgstr "Nestanoveno"
+
+#: ../src/helia-eqv.c:67
+msgid "Video equalizer"
+msgstr "Videoekvalizér"
+
+#~ msgid "All Channels"
+#~ msgstr "Všechny kanály"
+
+#~ msgid "Choose file"
+#~ msgstr "Vybrat soubor"
+
+#~ msgid "Choose files"
+#~ msgstr "Vybrat soubory"
+
+#~ msgid "Choose folder"
+#~ msgstr "Vybrat složku"
+
+#~ msgid "Clear"
+#~ msgstr "Vyprázdnit"
+
+#~ msgid "Convert"
+#~ msgstr "Převést"
+
+#~ msgid "Format  DVBv5"
+#~ msgstr "Formát  DVBv5"
+
+#~ msgid "General"
+#~ msgstr "Obecné"
+
+#~ msgid "Other"
+#~ msgstr "Jiné"
+
+#~ msgid "Preferences"
+#~ msgstr "Nastavení"
+
+#~ msgid "Radio"
+#~ msgstr "Rádio"
+
+#~ msgid "Shortcut"
+#~ msgstr "Klávesová zkratka"
+
+#~ msgid "TV"
+#~ msgstr "TV"
+
+#~ msgid "Undefined \n"
+#~ msgstr "Nestanoveno \n"

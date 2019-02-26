@@ -1,0 +1,113 @@
+# Ukrainian translations for helia package.
+# Copyright (C) 2018 THE helia'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the helia package.
+# <st.pr-u@yandex.ua>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: helia 5.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-25 23:29+0200\n"
+"PO-Revision-Date: 2018-05-21 08:01+0300\n"
+"Last-Translator: <st.pr-u@yandex.ua>\n"
+"Language-Team: Ukrainian\n"
+"Language: uk_UA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../src/helia-eqa.c:101
+msgid "Audio equalizer"
+msgstr "Аудіо еквалайзер"
+
+#: ../src/helia-eqa.c:21
+msgid "Bandwidth  Hz"
+msgstr "Смуга  Hz"
+
+#: ../src/helia-eqv.c:16
+msgid "Brightness"
+msgstr "Яскравість"
+
+#: ../src/base.c:212 ../src/scan.c:58 ../src/scan.c:927
+msgid "Channels"
+msgstr "Канали"
+
+#: ../src/helia-eqv.c:17
+msgid "Contrast"
+msgstr "Контраст"
+
+#: ../src/base.c:181
+msgid "Files"
+msgstr "Файли"
+
+#: ../src/helia-eqa.c:20
+msgid "Frequency  Hz"
+msgstr "Частота  Hz"
+
+#: ../src/helia-eqv.c:19
+msgid "Hue"
+msgstr "Відтінок"
+
+#: ../src/helia-eqa.c:19
+msgid "Level  dB"
+msgstr "Рівень  dB"
+
+#: ../src/helia-eqv.c:18
+msgid "Saturation"
+msgstr "Насиченість"
+
+#: ../src/scan.c:50
+msgid "Scanner"
+msgstr "Сканер"
+
+#: ../src/scan.c:1551 ../src/scan.c:1564
+msgid "Undefined"
+msgstr "Не визначено"
+
+#: ../src/helia-eqv.c:67
+msgid "Video equalizer"
+msgstr "Відео еквалайзер"
+
+#~ msgid "All Channels"
+#~ msgstr "Усі Канали"
+
+#~ msgid "Choose file"
+#~ msgstr "Вибрати файл"
+
+#~ msgid "Choose files"
+#~ msgstr "Вибрати файли"
+
+#~ msgid "Choose folder"
+#~ msgstr "Вибрати теку"
+
+#~ msgid "Clear"
+#~ msgstr "Очистити"
+
+#~ msgid "Convert"
+#~ msgstr "Конвертувати"
+
+#~ msgid "Format  DVBv5"
+#~ msgstr "Формат  DVBv5"
+
+#~ msgid "General"
+#~ msgstr "Головна"
+
+#~ msgid "Other"
+#~ msgstr "Інше"
+
+#~ msgid "Preferences"
+#~ msgstr "Налаштування"
+
+#~ msgid "Radio"
+#~ msgstr "Радіо"
+
+#~ msgid "Shortcut"
+#~ msgstr "Клавіатурні скорочення"
+
+#~ msgid "TV"
+#~ msgstr "ТБ"
+
+#~ msgid "Undefined \n"
+#~ msgstr "Не визначено \n"

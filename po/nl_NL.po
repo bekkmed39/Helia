@@ -1,0 +1,108 @@
+# Dutch translations for helia package.
+# Copyright (C) 2018 THE helia'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the helia package.
+# <vistausss@outlook.com>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: helia 5.4\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-25 23:29+0200\n"
+"PO-Revision-Date: 2018-05-05 12:24+0200\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
+"Language-Team: Dutch\n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.6\n"
+
+#: ../src/helia-eqa.c:101
+msgid "Audio equalizer"
+msgstr "Audio-equalizer"
+
+#: ../src/helia-eqa.c:21
+msgid "Bandwidth  Hz"
+msgstr "Bandbreedte  Hz"
+
+#: ../src/helia-eqv.c:16
+msgid "Brightness"
+msgstr "Helderheid"
+
+#: ../src/base.c:212 ../src/scan.c:58 ../src/scan.c:927
+msgid "Channels"
+msgstr "Kanalen"
+
+#: ../src/helia-eqv.c:17
+msgid "Contrast"
+msgstr "Contrast"
+
+#: ../src/base.c:181
+msgid "Files"
+msgstr "Bestanden"
+
+#: ../src/helia-eqa.c:20
+msgid "Frequency  Hz"
+msgstr "Frequentie  Hz"
+
+#: ../src/helia-eqv.c:19
+msgid "Hue"
+msgstr "Tint"
+
+#: ../src/helia-eqa.c:19
+msgid "Level  dB"
+msgstr "Niveau  dB"
+
+#: ../src/helia-eqv.c:18
+msgid "Saturation"
+msgstr "Verzadiging"
+
+#: ../src/scan.c:50
+msgid "Scanner"
+msgstr "Scanner"
+
+#: ../src/scan.c:1551 ../src/scan.c:1564
+msgid "Undefined"
+msgstr "Niet-opgegeven"
+
+#: ../src/helia-eqv.c:67
+msgid "Video equalizer"
+msgstr "Video-equalizer"
+
+#~ msgid "All Channels"
+#~ msgstr "Alle kanalen"
+
+#~ msgid "Choose file"
+#~ msgstr "Bestand kiezen"
+
+#, fuzzy
+#~ msgid "Choose files"
+#~ msgstr "Bestand kiezen"
+
+#~ msgid "Choose folder"
+#~ msgstr "Map kiezen"
+
+#~ msgid "Clear"
+#~ msgstr "Wissen"
+
+#~ msgid "Convert"
+#~ msgstr "Converteren"
+
+#~ msgid "Format  DVBv5"
+#~ msgstr "Formaat  DVBv5"
+
+#~ msgid "Other"
+#~ msgstr "Overig"
+
+#~ msgid "Preferences"
+#~ msgstr "Voorkeuren"
+
+#~ msgid "Radio"
+#~ msgstr "Radio"
+
+#~ msgid "TV"
+#~ msgstr "TV"
+
+#~ msgid "Undefined \n"
+#~ msgstr "Niet-opgegeven \n"

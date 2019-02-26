@@ -1,0 +1,90 @@
+diff --git a/dvb/gstdvb.c b/dvb/gstdvb.c
+index 3942deb..07ea784 100644
+--- a/dvb/gstdvb.c
++++ b/dvb/gstdvb.c
+@@ -24,7 +24,7 @@
+ #include "config.h"
+ #endif
+ 
+-#include <gst/gst-i18n-plugin.h>
++#include <gst-i18n-plugin.h>
+ 
+ #include "gstdvbsrc.h"
+ #include "dvbbasebin.h"
+@@ -52,4 +52,4 @@ GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
+     GST_VERSION_MINOR,
+     dvb,
+     "DVB elements",
+-    plugin_init, VERSION, GST_LICENSE, GST_PACKAGE_NAME, GST_PACKAGE_ORIGIN)
++    plugin_init, VERSION, "LGPL", "GStreamer Bad Plugins", "https://gstreamer.freedesktop.org/src/gst-plugins-bad")
+diff --git a/dvb/gstdvbsrc.c b/dvb/gstdvbsrc.c
+index d9bee26..fb47909 100644
+--- a/dvb/gstdvbsrc.c
++++ b/dvb/gstdvbsrc.c
+@@ -95,7 +95,7 @@
+ 
+ #include "gstdvbsrc.h"
+ #include <gst/gst.h>
+-#include <gst/glib-compat-private.h>
++#include <glib-compat-private.h>
+ #include <sys/ioctl.h>
+ #include <sys/poll.h>
+ #include <fcntl.h>
+@@ -110,7 +110,7 @@
+ #include <linux/dvb/frontend.h>
+ #include <linux/dvb/dmx.h>
+ 
+-#include <gst/gst-i18n-plugin.h>
++#include <gst-i18n-plugin.h>
+ 
+ /* Before 5.6 we map A to AC */
+ #if !HAVE_V5_MINOR(6)
+@@ -1784,6 +1784,13 @@ gst_dvbsrc_open_dvr (GstDvbSrc * object)
+ 
+   dvr_dev = g_strdup_printf ("/dev/dvb/adapter%d/dvr%d",
+       object->adapter_number, object->frontend_number);
++
++  if ( !g_file_test ( dvr_dev, G_FILE_TEST_EXISTS ) )
++  {
++    g_free (dvr_dev);
++    dvr_dev = g_strdup_printf ("/dev/dvb/adapter%d/dvr%d", object->adapter_number, 0);
++  }
++
+   GST_INFO_OBJECT (object, "Using DVR device: %s", dvr_dev);
+ 
+   /* open DVR */
+@@ -2770,6 +2777,12 @@ gst_dvbsrc_set_pes_filters (GstDvbSrc * object)
+   gchar *demux_dev = g_strdup_printf ("/dev/dvb/adapter%d/demux%d",
+       object->adapter_number, object->frontend_number);
+ 
++  if ( !g_file_test ( demux_dev, G_FILE_TEST_EXISTS ) )
++  {
++    g_free (demux_dev);
++    demux_dev = g_strdup_printf ("/dev/dvb/adapter%d/demux%d", object->adapter_number, 0);
++  }
++
+   GST_INFO_OBJECT (object, "Setting PES filter");
+ 
+   /* Set common params for all filters */
+diff --git a/dvb/parsechannels.c b/dvb/parsechannels.c
+index 1ecc38a..25880ae 100644
+--- a/dvb/parsechannels.c
++++ b/dvb/parsechannels.c
+@@ -31,7 +31,7 @@
+ #include <string.h>
+ #include <gst/gst.h>
+ 
+-#include <gst/gst-i18n-plugin.h>
++#include <gst-i18n-plugin.h>
+ 
+ #include "parsechannels.h"
+ 
+@@ -889,7 +889,7 @@ set_properties_for_channel (GstElement * dvbbasebin,
+   filename = g_strdup (g_getenv ("GST_DVB_CHANNELS_CONF"));
+   if (filename == NULL) {
+     filename = g_build_filename (g_get_user_config_dir (),
+-        "gstreamer-" GST_API_VERSION, "dvb-channels.conf", NULL);
++        "gstreamer-" "1.0", "dvb-channels.conf", NULL);
+   }
+ 
+   switch (detect_file_format (filename)) {

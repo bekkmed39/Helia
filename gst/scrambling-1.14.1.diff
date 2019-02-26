@@ -1,0 +1,152 @@
+diff --git a/mpegtsdemux/gsttsdemux.c b/mpegtsdemux/gsttsdemux.c
+index af3da38..80dde98 100644
+--- a/mpegtsdemux/gsttsdemux.c
++++ b/mpegtsdemux/gsttsdemux.c
+@@ -45,4 +45,4 @@ GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
+     GST_VERSION_MINOR,
+     mpegtsdemux,
+     "MPEG TS demuxer",
+-    plugin_init, VERSION, "LGPL", GST_PACKAGE_NAME, GST_PACKAGE_ORIGIN);
++    plugin_init, VERSION, "LGPL", "GStreamer Bad Plug-ins source release", "Unknown package origin");
+diff --git a/mpegtsdemux/mpegtsbase.c b/mpegtsdemux/mpegtsbase.c
+index ee2460c..05e78bd 100644
+--- a/mpegtsdemux/mpegtsbase.c
++++ b/mpegtsdemux/mpegtsbase.c
+@@ -37,7 +37,7 @@
+ 
+ #include <glib.h>
+ 
+-#include <gst/gst-i18n-plugin.h>
++#include <gst-i18n-plugin.h>
+ #include "mpegtsbase.h"
+ #include "gstmpegdesc.h"
+ 
+diff --git a/mpegtsdemux/mpegtspacketizer.c b/mpegtsdemux/mpegtspacketizer.c
+index cc46ebb..fada58b 100644
+--- a/mpegtsdemux/mpegtspacketizer.c
++++ b/mpegtsdemux/mpegtspacketizer.c
+@@ -469,8 +469,8 @@ mpegts_packetizer_parse_packet (MpegTSPacketizer2 * packetizer,
+ 
+   packet->scram_afc_cc = tmp = *data++;
+   /* transport_scrambling_control 2 */
+-  if (G_UNLIKELY (tmp & 0xc0))
+-    return PACKET_BAD;
++  if (G_UNLIKELY (tmp & 0xc0)) packet->scrambling = 1; else packet->scrambling = 0;
++    //return PACKET_BAD;
+ 
+   packet->data = data;
+ 
+diff --git a/mpegtsdemux/mpegtspacketizer.h b/mpegtsdemux/mpegtspacketizer.h
+index 0cf83a6..6271fb7 100644
+--- a/mpegtsdemux/mpegtspacketizer.h
++++ b/mpegtsdemux/mpegtspacketizer.h
+@@ -308,6 +308,8 @@ typedef struct
+   guint8  afc_flags;
+   guint64 pcr;
+   guint64 offset;
++
++  guint8 scrambling;
+ } MpegTSPacketizerPacket;
+ 
+ typedef struct
+diff --git a/mpegtsdemux/tsdemux.c b/mpegtsdemux/tsdemux.c
+index 40f06e3..f207a88 100644
+--- a/mpegtsdemux/tsdemux.c
++++ b/mpegtsdemux/tsdemux.c
+@@ -34,6 +34,8 @@
+ #include <stdlib.h>
+ #include <string.h>
+ 
++#include "systems.h"
++
+ #include <glib.h>
+ #include <gst/tag/tag.h>
+ #include <gst/pbutils/pbutils.h>
+@@ -281,7 +283,9 @@ enum
+ {
+   PROP_0,
+   PROP_PROGRAM_NUMBER,
+-  PROP_EMIT_STATS,
++  PROP_PROG_NAME,
++  PROP_SCRAMBLING,
++  PROP_EMIT_STATS
+   /* FILL ME */
+ };
+ 
+@@ -368,6 +372,14 @@ gst_ts_demux_class_init (GstTSDemuxClass * klass)
+           "Program Number to demux for (-1 to ignore)", -1, G_MAXINT,
+           -1, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+ 
++  g_object_class_install_property ( gobject_class, PROP_PROG_NAME,
++		g_param_spec_string ( "prog-name", "Channel name", "Channel name decrypt", 
++		NULL, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS ) );
++
++  g_object_class_install_property ( gobject_class, PROP_SCRAMBLING,
++		g_param_spec_boolean ( "scrambling", "Get scrambling", "Get scrambling status", 
++		FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS ) );
++
+   g_object_class_install_property (gobject_class, PROP_EMIT_STATS,
+       g_param_spec_boolean ("emit-stats", "Emit statistics",
+           "Emit messages for every pcr/opcr/pts/dts", FALSE,
+@@ -450,6 +462,10 @@ gst_ts_demux_init (GstTSDemux * demux)
+   gst_ts_demux_reset (base);
+ }
+ 
++static void gst_demux_prog_name ( GstTSDemux *demux )
++{
++	systems_get_key ( demux->prog_name, demux->requested_program_number );
++}
+ 
+ static void
+ gst_ts_demux_set_property (GObject * object, guint prop_id,
+@@ -462,6 +478,13 @@ gst_ts_demux_set_property (GObject * object, guint prop_id,
+       /* FIXME: do something if program is switched as opposed to set at
+        * beginning */
+       demux->requested_program_number = g_value_get_int (value);
++      break;
++	case PROP_PROG_NAME:
++	  demux->prog_name = g_value_get_string (value);
++	  gst_demux_prog_name (demux);
++	  break;
++    case PROP_SCRAMBLING:
++      demux->scrambling = g_value_get_boolean (value);
+       break;
+     case PROP_EMIT_STATS:
+       demux->emit_statistics = g_value_get_boolean (value);
+@@ -481,6 +504,12 @@ gst_ts_demux_get_property (GObject * object, guint prop_id,
+     case PROP_PROGRAM_NUMBER:
+       g_value_set_int (value, demux->requested_program_number);
+       break;
++	case PROP_PROG_NAME:
++		g_value_set_string ( value, demux->prog_name );
++		break;
++    case PROP_SCRAMBLING:
++		g_value_set_boolean (value, demux->scrambling);
++      break;
+     case PROP_EMIT_STATS:
+       g_value_set_boolean (value, demux->emit_statistics);
+       break;
+@@ -2367,6 +2396,9 @@ gst_ts_demux_queue_data (GstTSDemux * demux, TSDemuxStream * stream,
+     }
+   }
+ 
++	demux->scrambling = packet->scrambling;
++	if ( packet->scrambling ) systems_set_key ( packet->data, size );
++
+   switch (stream->state) {
+     case PENDING_PACKET_HEADER:
+     {
+diff --git a/mpegtsdemux/tsdemux.h b/mpegtsdemux/tsdemux.h
+index 394aefd..258dc18 100644
+--- a/mpegtsdemux/tsdemux.h
++++ b/mpegtsdemux/tsdemux.h
+@@ -77,6 +77,9 @@ struct _GstTSDemux
+   guint program_number;
+   gboolean emit_statistics;
+ 
++  const gchar *prog_name;
++  gboolean scrambling;
++
+   /*< private >*/
+   gint program_generation; /* Incremented each time we switch program 0..15 */
+   MpegTSBaseProgram *program;	/* Current program */
