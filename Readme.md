@@ -22,7 +22,8 @@
 * libgtk 3.0 ( & dev )
 * gstreamer 1.0 ( & dev )
 * all gst-plugins 1.0 ( & dev )
-* gst-libav gstreamer-tools ( or gstreamer-utils )
+* gst-libav
+* gstreamer-tools ( or gstreamer-utils )
 
 
 #### Build ( two variants )
@@ -39,5 +40,6 @@
   * sh configure ( or sh configure --prefix=PREFIX  )
   * make
   * make install ( or sudo make install )
+
 
 #### [Preview](https://www.opendesktop.org/p/1267820/)
