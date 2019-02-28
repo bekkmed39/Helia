@@ -9,11 +9,12 @@
 
 #include <base.h>
 
+#include "tree-view.h"
+#include "lang.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#include "tree-view.h"
 
 
 static char * pref_get_prop ( const char *prop );
@@ -30,7 +31,7 @@ void about_win ( GtkWindow *window )
 	const char *license     = "This program is free software. \n\nGNU Lesser General Public License \nwww.gnu.org/licenses/lgpl.html";
 
 	gtk_about_dialog_set_program_name ( dialog, "Helia" );
-	gtk_about_dialog_set_version ( dialog, "5.4" );
+	gtk_about_dialog_set_version ( dialog, "5.5" );
 	gtk_about_dialog_set_license ( dialog, license );
 	gtk_about_dialog_set_authors ( dialog, authors );
 	gtk_about_dialog_set_artists ( dialog, artists );
@@ -369,6 +370,43 @@ static void pref_create_scale ( Base *base, const char *text, double val, double
 	gtk_box_pack_start ( h_box, GTK_WIDGET ( scale ), TRUE, TRUE, 0 );
 }
 
+static void pref_changed_combo_lang ( GtkComboBoxText *combo_box, Base *base )
+{
+	base->num_lang = gtk_combo_box_get_active ( GTK_COMBO_BOX ( combo_box ) );
+
+	GtkTreeViewColumn *column = gtk_tree_view_get_column ( base->player->treeview, COL_FL_CH );
+	gtk_tree_view_column_set_title ( column, lang_set ( base, "Files" ) );
+
+	column = gtk_tree_view_get_column ( base->dtv->treeview, COL_FL_CH );
+	gtk_tree_view_column_set_title ( column, lang_set ( base, "Channels" ) );
+}
+
+
+static void pref_create_combo ( Base *base, const char *text, void (*f)(), GtkBox *h_box )
+{
+	GtkImage *image = base_create_image ( text, 32 );
+	gtk_widget_set_halign ( GTK_WIDGET ( image ), GTK_ALIGN_START );
+
+	gtk_box_pack_start ( h_box, GTK_WIDGET ( image ), TRUE, TRUE, 0 );
+
+	GtkLabel *label = (GtkLabel *)gtk_label_new ( "" );
+	gtk_widget_set_size_request ( GTK_WIDGET ( label ), 50, -1 );
+	gtk_box_pack_start ( h_box, GTK_WIDGET ( label ), TRUE, TRUE, 0 );
+
+	GtkComboBoxText *combo = (GtkComboBoxText *)gtk_combo_box_text_new ();
+	
+	lang_add_combo ( combo );
+	
+	gtk_combo_box_set_active ( GTK_COMBO_BOX ( combo ), base->num_lang );
+	g_signal_connect ( combo, "changed", G_CALLBACK ( f ), base );
+
+	gtk_widget_set_size_request ( GTK_WIDGET ( combo ), 250, -1 );
+	gtk_widget_set_halign ( GTK_WIDGET ( combo ), GTK_ALIGN_END );
+
+	gtk_box_pack_start ( h_box, GTK_WIDGET ( combo ), TRUE, TRUE, 0 );
+}
+
+
 void pref_win ( Base *base )
 {
 	GtkWindow *window =      (GtkWindow *)gtk_window_new ( GTK_WINDOW_TOPLEVEL );
@@ -402,6 +440,12 @@ void pref_win ( Base *base )
 		pref_create_entry ( base, "helia-style", set_text, pref_set_theme, h_box );
 
 		g_free ( set_text );
+
+	gtk_box_pack_start ( m_box, GTK_WIDGET ( h_box ), FALSE, FALSE, 0 );
+
+	h_box = (GtkBox *)gtk_box_new ( GTK_ORIENTATION_HORIZONTAL, 0 );
+	
+		pref_create_combo ( base, "helia-locale", pref_changed_combo_lang, h_box );
 
 	gtk_box_pack_start ( m_box, GTK_WIDGET ( h_box ), FALSE, FALSE, 0 );
 

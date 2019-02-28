@@ -1,6 +1,7 @@
 /*
 * Copyright 2018 - 2019 Stepan Perun
 * This program is free software.
+* 
 * License: Gnu Lesser General Public License
 * http://www.gnu.org/licenses/lgpl.html
 */
@@ -8,7 +9,7 @@
 
 #include <base.h>
 
-#include <glib/gi18n.h>
+#include "lang.h"
 
 
 #define BAND_N 10
@@ -16,9 +17,9 @@ static gpointer dat_gfb[3][BAND_N];
 
 static struct GstEQAudioData { const char *name; const char *desc; } eqa_n[] =
 {
-	{ N_("Level  dB"    ),  "gain"      },
-	{ N_("Frequency  Hz"),  "freq"      },
-	{ N_("Bandwidth  Hz"),  "bandwidth" }
+	{ "Level dB"    ,  "gain"      },
+	{ "Frequency Hz",  "freq"      },
+	{ "Bandwidth Hz",  "bandwidth" }
 };
 
 
@@ -63,7 +64,7 @@ static void helia_eqa_clear ()
 	helia_eqa_default ();
 }
 
-static void helia_eqa_create_label ( GtkBox *vbox )
+static void helia_eqa_create_label ( GtkBox *vbox, Base *base )
 {
 	GtkBox *hboxl = (GtkBox *)gtk_box_new ( GTK_ORIENTATION_HORIZONTAL, 0 );
 	GtkLabel *label;
@@ -71,7 +72,7 @@ static void helia_eqa_create_label ( GtkBox *vbox )
 	uint i = 0;
 	for ( i = 0; i < G_N_ELEMENTS ( eqa_n ); i++ )
 	{
-		label = (GtkLabel *)gtk_label_new ( _(eqa_n[i].name) );
+		label = (GtkLabel *)gtk_label_new ( lang_set ( base, eqa_n[i].name ) );
 		gtk_box_pack_start ( hboxl, GTK_WIDGET ( label ), TRUE, TRUE, 10 );
 	}
 
@@ -91,14 +92,14 @@ static GtkScale * helia_eqa_create_scale_g_f_b ( GtkBox *scales_hbox, gdouble g_
 	return widget;
 }
 
-void helia_eqa_win ( GstElement *element, GtkWindow *parent, gdouble opacity )
+void helia_eqa_win ( GstElement *element, GtkWindow *parent, gdouble opacity, Base *base )
 {
 	GtkBox *vbox_main, *vbox, *h_box;
 	GtkScale *widget;
 
 	GtkWindow *window_eq_audio = (GtkWindow *)gtk_window_new ( GTK_WINDOW_TOPLEVEL );
 	gtk_window_set_transient_for ( window_eq_audio, parent );
-	gtk_window_set_title    ( window_eq_audio, _("Audio equalizer") );
+	gtk_window_set_title    ( window_eq_audio, lang_set ( base, "Audio equalizer" ) );
 	gtk_window_set_modal    ( window_eq_audio, TRUE );
 	gtk_window_set_position ( window_eq_audio, GTK_WIN_POS_CENTER_ON_PARENT );
 
@@ -109,7 +110,7 @@ void helia_eqa_win ( GstElement *element, GtkWindow *parent, gdouble opacity )
 
 	vbox = (GtkBox *)gtk_box_new ( GTK_ORIENTATION_VERTICAL, 0 );
 
-	helia_eqa_create_label ( vbox_main );
+	helia_eqa_create_label ( vbox_main, base );
 
 	g_object_set ( G_OBJECT ( element ), "num-bands", BAND_N, NULL );
 

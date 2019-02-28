@@ -40,13 +40,6 @@ else
 
 	cd $DIR
 
-	sed 's|include <gst/gst-i18n-plugin.h>|include <gst-i18n-plugin.h>|' -i gstdvb.c
-	sed 's|GST_LICENSE|"LGPL"|;s|GST_PACKAGE_NAME|"GStreamer Bad Plugins"|' -i gstdvb.c
-	sed 's|GST_PACKAGE_ORIGIN|"https://gstreamer.freedesktop.org/src/gst-plugins-bad"|' -i gstdvb.c
-	sed 's|include <gst/gst-i18n-plugin.h>|include <gst-i18n-plugin.h>|' -i gstdvbsrc.c
-	sed 's|include <gst/glib-compat-private.h>|include <glib-compat-private.h>|' -i gstdvbsrc.c
-	sed 's|include <gst/gst-i18n-plugin.h>|include <gst-i18n-plugin.h>|' -i parsechannels.c
-	sed 's|GST_API_VERSION|"1.0"|' -i parsechannels.c
 fi
 
 echo ""

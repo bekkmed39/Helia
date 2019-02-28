@@ -1,6 +1,7 @@
 /*
 * Copyright 2018 - 2019 Stepan Perun
 * This program is free software.
+* 
 * License: Gnu Lesser General Public License
 * http://www.gnu.org/licenses/lgpl.html
 */
@@ -8,15 +9,15 @@
 
 #include <base.h>
 
-#include <glib/gi18n.h>
+#include "lang.h"
 
 
 static struct GstEQVideoData { const char *name; const char *desc; } eqv_n[] =
 {
-	{ N_("Brightness"), "brightness" },
-	{ N_("Contrast"  ),	"contrast"   },
-	{ N_("Saturation"),	"saturation" },
-	{ N_("Hue"       ),	"hue"        }
+	{ "Brightness", "brightness" },
+	{ "Contrast"  ,	"contrast"   },
+	{ "Saturation",	"saturation" },
+	{ "Hue"       ,	"hue"        }
 };
 
 static GtkScale *all_scale[ G_N_ELEMENTS (eqv_n) ];
@@ -57,14 +58,14 @@ static void helia_eqv_clear_one ( G_GNUC_UNUSED GtkToolItem *item, GtkScale *sca
 	gtk_range_set_value ( GTK_RANGE ( scale ), 0.0 );
 }
 
-void helia_eqv_win ( GstElement *element, GtkWindow *parent, gdouble opacity )
+void helia_eqv_win ( GstElement *element, GtkWindow *parent, gdouble opacity, Base *base )
 {
 	GtkBox *m_box, *h_box;
 	GtkLabel *name_label;
 
 	GtkWindow *window_eq_video = (GtkWindow *)gtk_window_new ( GTK_WINDOW_TOPLEVEL );
 	gtk_window_set_transient_for ( window_eq_video, parent );
-	gtk_window_set_title    ( window_eq_video, _("Video equalizer") );
+	gtk_window_set_title    ( window_eq_video, lang_set ( base, "Video equalizer" ) );
 	gtk_window_set_modal    ( window_eq_video, TRUE );
 	gtk_window_set_position ( window_eq_video, GTK_WIN_POS_CENTER_ON_PARENT );
 
@@ -76,7 +77,7 @@ void helia_eqv_win ( GstElement *element, GtkWindow *parent, gdouble opacity )
 	uint c = 0;
 	for ( c = 0; c < G_N_ELEMENTS ( eqv_n ); c++ )
 	{
-		name_label = (GtkLabel *)gtk_label_new ( _(eqv_n[c].name) );
+		name_label = (GtkLabel *)gtk_label_new ( lang_set ( base, eqv_n[c].name ) );
 		gtk_widget_set_halign ( GTK_WIDGET ( name_label ), GTK_ALIGN_START );
 
 		gdouble val = 0;

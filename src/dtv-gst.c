@@ -638,14 +638,14 @@ static void dtv_gst_set_tuning_timeout ( GstElement *element )
 	g_object_set ( element, "tuning-timeout", (guint64)timeout / 5, NULL );
 }
 
-static void dtv_gst_tv_delsys ( GstElement *element )
+static void dtv_gst_tv_delsys ( GstElement *element, Base *base )
 {
 	uint adapter = 0, frontend = 0, delsys = 0;
 	g_object_get ( element, "adapter",  &adapter,  NULL );
 	g_object_get ( element, "frontend", &frontend, NULL );
 	g_object_get ( element, "delsys",   &delsys,   NULL );
 
-	char *dvb_name = helia_get_dvb_info ( adapter, frontend );
+	char *dvb_name = helia_get_dvb_info ( base, adapter, frontend );
 	const char *dvb_type = helia_get_dvb_type_str ( delsys );
 
 	g_print ( "DVB device: %s ( %s ) | adapter %d frontend %d \n\n", dvb_name, dvb_type, adapter, frontend );
@@ -714,7 +714,7 @@ static void dtv_gst_data_set ( GstElement *pipeline, const char *data, Base *bas
 
 	g_strfreev (fields);
 
-	dtv_gst_tv_delsys ( element );
+	dtv_gst_tv_delsys ( element, base );
 }
 
 void dtv_stop ( Base *base )

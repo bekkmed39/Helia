@@ -1,5 +1,5 @@
 program		= helia
-version		= 5.4
+version		= 5.5
 
 DEFS		= -DPACKAGE_NAME=\"$(program)\" -DPACKAGE_VERSION=\"$(version)\" -DPACKAGE=\"$(program)\" -DVERSION=\"$(version)\"
 
@@ -44,7 +44,7 @@ binary		= $(builddir)/$(program)
 
 
 
-all: info dirs desktop $(binary) lang
+all: info dirs desktop $(binary)
 
 info:
 	@echo
@@ -58,7 +58,10 @@ dirs:
 
 $(desktop):
 	@echo '  Gen desktop'
-	@echo "[Desktop Entry]\nName=$(desk_name)\nComment=Digital TV & Media Player\nType=Application\nExec=$(bindir)/$(program) %U\nIcon=display\nTerminal=false\nCategories=GTK;AudioVideo;Audio;Video;Player;TV;" > $@
+	@echo "[Desktop Entry]" > $@
+	@for info in "Name=$(desk_name)" "Comment=Digital TV & Media Player" "Type=Application" "Exec=$(bindir)/$(program) %U" "Icon=display" "Terminal=false" "Categories=GTK;AudioVideo;Audio;Video;Player;TV;"; do \
+		echo "$$info" >> $@; \
+	done
 	@cat data/desktop-mime >> $@
 
 desktop: $(desktop)
@@ -94,8 +97,8 @@ $(obj_res): $(buildsrcdir)/%.o : $(buildatadir)/%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 
-lang:
-	$(MAKE) -s -C po program=$(program) version=$(version) builddir=$(builddir)
+#lang:
+#	$(MAKE) -s -C po program=$(program) version=$(version) builddir=$(builddir)
 
 
 clean:
@@ -108,12 +111,12 @@ install: strip
 	mkdir -p $(DESTDIR)$(bindir) $(DESTDIR)$(datadir) $(DESTDIR)$(desktopdir)
 	install -Dp -m0755 $(builddir)/$(program) $(DESTDIR)$(bindir)/$(program)
 	install -Dp -m0644 $(builddir)/$(program).desktop $(DESTDIR)$(desktopdir)/$(program).desktop
-	cp -r $(builddir)/locale $(DESTDIR)$(datadir)
+#	cp -r $(builddir)/locale $(DESTDIR)$(datadir)
 
 uninstall:
 	rm -f $(DESTDIR)$(bindir)/$(program)
 	rm -f $(DESTDIR)$(desktopdir)/$(program).desktop
-	rm -fr $(DESTDIR)$(datadir)/locale/*/*/$(program).mo
+#	rm -fr $(DESTDIR)$(datadir)/locale/*/*/$(program).mo
 
 help:
 	@echo

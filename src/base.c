@@ -17,10 +17,10 @@
 #include "player-slider.h"
 #include "pref.h"
 #include "scan.h"
+#include "lang.h"
 
 #include <gdk/gdkkeysyms.h>
 #include <glib/gstdio.h>
-#include <glib/gi18n.h>
 
 
 typedef struct _FuncAction FuncAction;
@@ -133,6 +133,7 @@ static Base * base_init ()
 	base->app_quit = FALSE;
 
 	base->size_icon = 28;
+	base->num_lang = lang_get_def ();
 
 	base->opacity_win   = 1.0;
 	base->opacity_eq    = 0.85;
@@ -178,7 +179,7 @@ static void base_create_player ( Base *base, GtkBox *box )
 
 	base->player->playbin = player_gst_create ( base );
 
-	base->player->treeview = create_treeview ( base, _( "Files" ), TRUE );
+	base->player->treeview = create_treeview ( base, lang_set ( base, "Files" ), TRUE );
 
 	base->player->video = player_win_create ( base );
 
@@ -209,7 +210,7 @@ static void base_create_dtv ( Base *base, GtkBox *box )
 
 	base->dtv->dvbplay = dtv_gst_create ( base );
 
-	base->dtv->treeview = create_treeview ( base, _( "Channels" ), FALSE );
+	base->dtv->treeview = create_treeview ( base, lang_set ( base, "Channels" ), FALSE );
 
 	base->dtv->video = dtv_win_create ( base );
 
@@ -498,10 +499,6 @@ static void activate ( GtkApplication *app )
 int main ( int argc, char **argv )
 {
 	gst_init ( NULL, NULL );
-
-	bindtextdomain ( "helia", "/usr/share/locale" );
-	bind_textdomain_codeset ( "helia", "UTF-8" );
-	textdomain ( "helia" );
 
 	GtkApplication *app = gtk_application_new ( NULL, G_APPLICATION_HANDLES_OPEN );
 

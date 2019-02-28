@@ -166,7 +166,7 @@ struct _Base
 
 	double opacity_panel, opacity_eq, opacity_win;
 
-	uint size_icon;
+	uint num_lang, size_icon;
 
 	gboolean info_quit, app_quit;
 

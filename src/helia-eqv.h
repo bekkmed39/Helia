@@ -11,7 +11,7 @@
 #define HELIA_EQV_H
 
 
-void helia_eqv_win ( GstElement *element, GtkWindow *parent, gdouble opacity );
+void helia_eqv_win ( GstElement *element, GtkWindow *parent, gdouble opacity, Base *base );
 
 
 #endif /* HELIA_EQV_H */

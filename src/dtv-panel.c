@@ -54,7 +54,7 @@ static void dtv_panel_eqa ( G_GNUC_UNUSED GtkButton *button, Base *base )
 
 	if ( element == NULL ) return;
 
-	helia_eqa_win ( element, base->window, base->opacity_eq );
+	helia_eqa_win ( element, base->window, base->opacity_eq, base );
 }
 
 static void dtv_panel_eqv ( G_GNUC_UNUSED GtkButton *button, Base *base )
@@ -65,7 +65,7 @@ static void dtv_panel_eqv ( G_GNUC_UNUSED GtkButton *button, Base *base )
 
 	if ( element == NULL ) return;
 
-	helia_eqv_win ( element, base->window, base->opacity_eq );
+	helia_eqv_win ( element, base->window, base->opacity_eq, base );
 }
 
 static void dtv_panel_muted ( G_GNUC_UNUSED GtkButton *button, Base *base )

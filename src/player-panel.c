@@ -61,7 +61,7 @@ static void player_panel_eqa ( G_GNUC_UNUSED GtkButton *button, Base *base )
 
 	if ( GST_ELEMENT_CAST ( element )->current_state != GST_STATE_PLAYING ) return;
 
-	helia_eqa_win ( element, base->window, base->opacity_eq );
+	helia_eqa_win ( element, base->window, base->opacity_eq, base );
 }
 
 static void player_panel_eqv ( G_GNUC_UNUSED GtkButton *button, Base *base )
@@ -77,7 +77,7 @@ static void player_panel_eqv ( G_GNUC_UNUSED GtkButton *button, Base *base )
 
 	if ( GST_ELEMENT_CAST ( element )->current_state != GST_STATE_PLAYING ) return;
 
-	helia_eqv_win ( element, base->window, base->opacity_eq );
+	helia_eqv_win ( element, base->window, base->opacity_eq, base );
 }
 
 static void player_panel_muted ( G_GNUC_UNUSED GtkButton *button, Base *base )

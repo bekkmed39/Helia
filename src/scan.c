@@ -15,16 +15,15 @@
 #include "tree-view.h"
 #include "dtv-level.h"
 #include "pref.h"
+#include "lang.h"
 
 #include <stdlib.h>
 #include <glib/gstdio.h>
 #include <fcntl.h>
 #include <sys/ioctl.h>
 
-#include <glib/gi18n.h>
 
-
-char * helia_get_dvb_info ( uint adapter, uint frontend );
+char * helia_get_dvb_info ( Base *base, uint adapter, uint frontend );
 uint helia_get_dvb_delsys ( uint adapter, uint frontend );
 void helia_set_dvb_delsys ( uint adapter, uint frontend, uint delsys );
 
@@ -47,7 +46,7 @@ enum page_n
 
 const struct HeliaScanLabel { uint page; const char *name; } scan_label_n[] =
 {
-	{ PAGE_SC, N_( "Scanner" ) },
+	{ PAGE_SC, "Scanner"  },
 	{ PAGE_DT, "DVB-T/T2" },
 	{ PAGE_DS, "DVB-S/S2" },
 	{ PAGE_DC, "DVB-C"    },
@@ -55,7 +54,7 @@ const struct HeliaScanLabel { uint page; const char *name; } scan_label_n[] =
 	{ PAGE_DM, "DTMB"     },
 	{ PAGE_IT, "ISDB-T"   },
 	{ PAGE_IS, "ISDB-S"   },
-	{ PAGE_CH, N_( "Channels" ) }
+	{ PAGE_CH, "Channels" }
 };
 
 struct DvbDescrGstParam { const char *name; const char *dvb_v5_name; const char *gst_param; 
@@ -924,7 +923,7 @@ static GtkBox * scan_channels ( Base *base )
 	base->dtv->scan.all_channels = (GtkLabel *)gtk_label_new ( "⅀" );
 	gtk_widget_set_halign ( GTK_WIDGET ( base->dtv->scan.all_channels ), GTK_ALIGN_START );
 
-	base->dtv->scan.treeview_scan = create_treeview ( base, _( "Channels" ), FALSE );
+	base->dtv->scan.treeview_scan = create_treeview ( base, lang_set ( base, "Channels" ), FALSE );
 
 	GtkScrolledWindow *scroll_win = create_scroll_win ( base->dtv->scan.treeview_scan, 220 );
 
@@ -947,9 +946,9 @@ static GtkBox * scan_channels ( Base *base )
 	return g_box;
 }
 
-static void scan_set_label_device ( GtkLabel *label, uint adapter, uint frontend )
+static void scan_set_label_device ( Base *base, GtkLabel *label, uint adapter, uint frontend )
 {
-	char *dvb_name = helia_get_dvb_info ( adapter, frontend );
+	char *dvb_name = helia_get_dvb_info ( base, adapter, frontend );
 
 	gtk_label_set_text ( label, dvb_name );
 
@@ -964,7 +963,7 @@ static void scan_set_adapter ( GtkSpinButton *button, Base *base )
 
 	g_object_set ( base->dtv->scan.scan_dvbsrc, "adapter",  base->dtv->scan.adapter_set,  NULL );
 
-	scan_set_label_device ( base->dtv->scan.dvb_device, base->dtv->scan.adapter_set, base->dtv->scan.frontend_set );
+	scan_set_label_device ( base, base->dtv->scan.dvb_device, base->dtv->scan.adapter_set, base->dtv->scan.frontend_set );
 
 	base->dtv->scan.delsys_set = helia_get_dvb_delsys ( base->dtv->scan.adapter_set, base->dtv->scan.frontend_set );
 
@@ -984,7 +983,7 @@ static void scan_set_frontend ( GtkSpinButton *button, Base *base )
 
 	g_object_set ( base->dtv->scan.scan_dvbsrc, "frontend",  base->dtv->scan.frontend_set,  NULL );
 
-	scan_set_label_device ( base->dtv->scan.dvb_device, base->dtv->scan.adapter_set, base->dtv->scan.frontend_set );
+	scan_set_label_device ( base, base->dtv->scan.dvb_device, base->dtv->scan.adapter_set, base->dtv->scan.frontend_set );
 
 	base->dtv->scan.delsys_set = helia_get_dvb_delsys ( base->dtv->scan.adapter_set, base->dtv->scan.frontend_set );
 
@@ -1208,7 +1207,7 @@ static GtkBox * scan_device ( Base *base )
 		gtk_widget_set_halign ( GTK_WIDGET ( label ), ( d == 0 ) ? GTK_ALIGN_CENTER : GTK_ALIGN_START );
 		gtk_grid_attach ( GTK_GRID ( grid ), GTK_WIDGET ( label ), 0, d, ( d == 0 ) ? 2 : 1, 1 );
 
-		if ( d == 0 ) { base->dtv->scan.dvb_device = label; scan_set_label_device ( base->dtv->scan.dvb_device, base->dtv->scan.adapter_set, base->dtv->scan.frontend_set ); }
+		if ( d == 0 ) { base->dtv->scan.dvb_device = label; scan_set_label_device ( base, base->dtv->scan.dvb_device, base->dtv->scan.adapter_set, base->dtv->scan.frontend_set ); }
 
 		if ( d == 2 || d == 3 )
 		{
@@ -1338,7 +1337,7 @@ void scan_win_create ( Base *base )
 	{
 		m_box_n[j] = (GtkBox *)gtk_box_new ( GTK_ORIENTATION_VERTICAL, 0 );
 		gtk_box_pack_start ( m_box_n[j], GTK_WIDGET ( scan_all_box ( base, j ) ), TRUE, TRUE, 0 );
-		gtk_notebook_append_page ( notebook, GTK_WIDGET ( m_box_n[j] ),  gtk_label_new ( _( scan_label_n[j].name ) ) );
+		gtk_notebook_append_page ( notebook, GTK_WIDGET ( m_box_n[j] ),  gtk_label_new ( lang_set ( base, scan_label_n[j].name ) ) );
 
 		if ( j == PAGE_SC ) scan_create_control_battons ( base, m_box_n[PAGE_SC] );
 	}
@@ -1532,7 +1531,7 @@ uint helia_get_dvb_delsys ( uint adapter, uint frontend )
 	return dtv_delsys;
 }
 
-char * helia_get_dvb_info ( uint adapter, uint frontend )
+char * helia_get_dvb_info ( Base *base, uint adapter, uint frontend )
 {
 	int fd = 0, flags = O_RDWR;
 
@@ -1548,7 +1547,7 @@ char * helia_get_dvb_info ( uint adapter, uint frontend )
 
 			g_free  ( fd_name );
 
-			return g_strdup ( _( "Undefined" ) );
+			return g_strdup ( lang_set ( base, "Undefined" ) );
 		}
 	}
 
@@ -1561,7 +1560,7 @@ char * helia_get_dvb_info ( uint adapter, uint frontend )
 		g_close ( fd, NULL );
 		g_free  ( fd_name );
 
-		return g_strdup ( _( "Undefined" ) );
+		return g_strdup ( lang_set ( base, "Undefined" ) );
 	}
 
 	g_debug ( "DVB device: %s ( %s ) \n", info.name, fd_name );

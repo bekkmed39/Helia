@@ -20,7 +20,7 @@ uint helia_get_dvb_delsys ( uint adapter, uint frontend );
 void helia_set_dvb_delsys ( uint adapter, uint frontend, uint delsys );
 
 /* Returns a newly-allocated string holding the result. Free with free() */
-char * helia_get_dvb_info ( uint adapter, uint frontend );
+char * helia_get_dvb_info ( Base *base, uint adapter, uint frontend );
 
 const char * helia_get_dvb_type_str ( int delsys );
 const char * scan_get_info ( const char *data );
