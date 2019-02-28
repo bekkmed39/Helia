@@ -90,6 +90,7 @@ typedef struct _Langs Langs;
 
 struct _Langs
 {
+	const char *lang_sys;
 	const char *lang_name;
 	MsgIdStr *msgidstr;
 	uint num;
@@ -97,11 +98,11 @@ struct _Langs
 
 static Langs langs_n[] =
 {
-    { "English",   NULL, 0 },
-    { "Czech",     cs_CZ_msgidstr_n, G_N_ELEMENTS ( cs_CZ_msgidstr_n ) },
-    { "Dutch",     nl_NL_msgidstr_n, G_N_ELEMENTS ( nl_NL_msgidstr_n ) },
-    { "Russian",   ru_RU_msgidstr_n, G_N_ELEMENTS ( ru_RU_msgidstr_n ) },
-    { "Ukrainian", uk_UA_msgidstr_n, G_N_ELEMENTS ( uk_UA_msgidstr_n ) }
+    { "en_EN", "English",   NULL, 0 },
+    { "cs_CZ", "Czech",     cs_CZ_msgidstr_n, G_N_ELEMENTS ( cs_CZ_msgidstr_n ) },
+    { "nl_NL", "Dutch",     nl_NL_msgidstr_n, G_N_ELEMENTS ( nl_NL_msgidstr_n ) },
+    { "ru_RU", "Russian",   ru_RU_msgidstr_n, G_N_ELEMENTS ( ru_RU_msgidstr_n ) },
+    { "uk_UA", "Ukrainian", uk_UA_msgidstr_n, G_N_ELEMENTS ( uk_UA_msgidstr_n ) }
 };
 
 const char * lang_set ( Base *base, const char *text )
@@ -140,7 +141,7 @@ uint lang_get_def ()
 
     for ( i = 0; i < G_N_ELEMENTS ( langs_n ); i++ )
     {
-		if ( g_str_has_prefix ( lang, langs_n[i].lang_name ) ) return i;
+		if ( g_str_has_prefix ( lang, langs_n[i].lang_sys ) ) return i;
 	}
 
 	return res;
