@@ -97,11 +97,11 @@ struct _Langs
 
 static Langs langs_n[] =
 {
-    { "en_EN", NULL, 0 },
-    { "cs_CZ", cs_CZ_msgidstr_n, G_N_ELEMENTS ( cs_CZ_msgidstr_n ) },
-    { "nl_NL", nl_NL_msgidstr_n, G_N_ELEMENTS ( nl_NL_msgidstr_n ) },
-    { "ru_RU", ru_RU_msgidstr_n, G_N_ELEMENTS ( ru_RU_msgidstr_n ) },
-    { "uk_UA", uk_UA_msgidstr_n, G_N_ELEMENTS ( uk_UA_msgidstr_n ) }
+    { "English",   NULL, 0 },
+    { "Czech",     cs_CZ_msgidstr_n, G_N_ELEMENTS ( cs_CZ_msgidstr_n ) },
+    { "Dutch",     nl_NL_msgidstr_n, G_N_ELEMENTS ( nl_NL_msgidstr_n ) },
+    { "Russian",   ru_RU_msgidstr_n, G_N_ELEMENTS ( ru_RU_msgidstr_n ) },
+    { "Ukrainian", uk_UA_msgidstr_n, G_N_ELEMENTS ( uk_UA_msgidstr_n ) }
 };
 
 const char * lang_set ( Base *base, const char *text )
